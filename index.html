@@ -1,0 +1,121 @@
+import React, { useState } from 'react';
+import { Camera } from 'lucide-react';
+
+const initialPhotos = [
+  {
+    url: "/api/placeholder/1200/800",
+    title: "Ancient Forest",
+    location: "Olympic National Park",
+    year: "2024"
+  },
+  {
+    url: "/api/placeholder/1200/800",
+    title: "Dawn Mist",
+    location: "Redwood National Forest",
+    year: "2024"
+  },
+  {
+    url: "/api/placeholder/1200/800",
+    title: "Forest Light",
+    location: "Cascade Range",
+    year: "2024"
+  }
+];
+
+const PhotographyPortfolio = () => {
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  
+  const equipment = {
+    camera: "Sony A7R IV",
+    lenses: [
+      "Sony FE 16-35mm f/2.8 GM",
+      "Sony FE 70-200mm f/2.8 GM",
+      "Sony FE 90mm f/2.8 Macro G"
+    ]
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-zinc-100">
+      {/* Minimal Header */}
+      <header className="fixed w-full top-0 bg-black/95 backdrop-blur-sm z-40 border-b border-zinc-900">
+        <div className="container mx-auto px-6 py-4">
+          <h1 className="text-2xl font-light tracking-wider">JAMES ANDERSON</h1>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="pt-24 pb-16">
+        <div className="container mx-auto px-6">
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {initialPhotos.map((photo, index) => (
+              <div 
+                key={index}
+                className="group relative aspect-[4/5] cursor-pointer"
+                onClick={() => setSelectedPhoto(photo)}
+              >
+                <img
+                  src={photo.url}
+                  alt={photo.title}
+                  className="w-full h-full object-cover transition-all duration-700 ease-in-out"
+                />
+                <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity duration-700" />
+                <div className="absolute bottom-0 left-0 p-4 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0">
+                  <h3 className="text-lg font-light">{photo.title}</h3>
+                  <div className="flex gap-2 text-sm text-zinc-400 mt-1">
+                    <span>{photo.location}</span>
+                    <span>·</span>
+                    <span>{photo.year}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
+
+      {/* Minimal Equipment Section */}
+      <section className="fixed bottom-0 w-full bg-black/95 backdrop-blur-sm border-t border-zinc-900">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <Camera className="w-4 h-4 text-zinc-500" />
+              <span className="text-zinc-400">{equipment.camera}</span>
+            </div>
+            <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+              {equipment.lenses.map((lens, index) => (
+                <span key={index} className="text-zinc-500 font-light">{lens}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Full-screen Modal */}
+      {selectedPhoto && (
+        <div 
+          className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <div className="w-full h-full flex flex-col items-center justify-center p-8">
+            <img
+              src={selectedPhoto.url}
+              alt={selectedPhoto.title}
+              className="max-h-[85vh] w-auto object-contain"
+            />
+            <div className="mt-4 text-center">
+              <h3 className="text-xl font-light tracking-wide">{selectedPhoto.title}</h3>
+              <div className="flex gap-2 justify-center text-sm text-zinc-400 mt-2">
+                <span>{selectedPhoto.location}</span>
+                <span>·</span>
+                <span>{selectedPhoto.year}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PhotographyPortfolio;
